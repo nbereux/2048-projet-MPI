@@ -1,4 +1,4 @@
-#include "2048.h"
+	#include "2048.h"
 
 /** Construit un tableau 2D 4x4 d'entiers dont les valeurs sont initialisées à 0
  * @return le tableau 2D 4x4 d'entiers
@@ -139,7 +139,8 @@ Plateau suppression0Haut(Plateau plateau){
                 plateau[k][i] = 0;
                 k--;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -157,7 +158,8 @@ Plateau suppression0Bas(Plateau plateau){
                 plateau[k][i] = 0;
                 k++;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -175,7 +177,8 @@ Plateau suppression0Gauche(Plateau plateau){
                 plateau[i][k] = 0;
                 k--;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -193,7 +196,8 @@ Plateau suppression0Droite(Plateau plateau){
                 plateau[i][k] = 0;
                 k++;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -203,31 +207,6 @@ Plateau suppression0Droite(Plateau plateau){
 **/
 
 Plateau additionHaut(Plateau plateau){
-    for (int i = 0; i<plateau.size(); i++){
-        if (plateau[3][i] == plateau[2][i]){
-            plateau[3][i] = 2*plateau[3][i];
-            plateau[2][i] = 0;
-            if (plateau[1][i] == plateau[0][i]){
-                plateau[1][i] = 2*plateau[1][i];
-                plateau[0][i] = 0;
-            }
-        } else if (plateau[2][i] == plateau[1][i]){
-            plateau[1][i] = 2*plateau[1][i];
-            plateau[2][i] = 0;
-        } else if (plateau[1][i] == plateau[0][i]){
-            plateau[1][i] = 2*plateau[1][i];
-            plateau[0][i] = 0;
-        }
-    }
-    return plateau;
-}
-
-/** Additionne les tuiles vers le bas
- * @param un plateau plateau
- * @return le plateau après les additions
-**/
-
-Plateau additionBas(Plateau plateau){
     for (int i = 0; i<plateau.size(); i++){
         if (plateau[0][i] == plateau[1][i]){
             plateau[0][i] = 2*plateau[0][i];
@@ -242,6 +221,31 @@ Plateau additionBas(Plateau plateau){
         } else if (plateau[2][i] == plateau[3][i]){
             plateau[2][i] = 2*plateau[2][i];
             plateau[3][i] = 0;
+        }
+    }
+    return plateau;
+}
+
+/** Additionne les tuiles vers le bas
+ * @param un plateau plateau
+ * @return le plateau après les additions
+**/
+
+Plateau additionBas(Plateau plateau){
+    for (int i = 0; i<plateau.size(); i++){
+        if (plateau[3][i] == plateau[2][i]){
+            plateau[3][i] = 2*plateau[3][i];
+            plateau[2][i] = 0;
+            if (plateau[1][i] == plateau[0][i]){
+                plateau[1][i] = 2*plateau[1][i];
+                plateau[0][i] = 0;
+            }
+        } else if (plateau[2][i] == plateau[1][i]){
+            plateau[1][i] = 2*plateau[1][i];
+            plateau[2][i] = 0;
+        } else if (plateau[1][i] == plateau[0][i]){
+            plateau[1][i] = 2*plateau[1][i];
+            plateau[0][i] = 0;
         }
     }
     return plateau;
@@ -279,19 +283,19 @@ Plateau additionGauche(Plateau plateau){
 
 Plateau additionDroite(Plateau plateau){
     for (int i = 0; i<plateau.size(); i++){
-        if (plateau[i][0] == plateau[i][1]){
-            plateau[i][0] = 2*plateau[i][0];
-            plateau[i][1] = 0;
-            if (plateau[i][2] == plateau[i][3]){
-                plateau[i][2] = 2*plateau[i][2];
-                plateau[i][3] = 0;
+        if (plateau[i][3] == plateau[i][2]){
+            plateau[i][3] = 2*plateau[i][3];
+            plateau[i][2] = 0;
+            if (plateau[i][1] == plateau[i][0]){
+                plateau[i][1] = 2*plateau[i][1];
+                plateau[i][0] = 0;
             }
-        } else if (plateau[i][1] == plateau[i][2]){
-            plateau[i][2] = 2*plateau[i][2];
-            plateau[i][1] = 0;
-        } else if (plateau[i][2] == plateau[i][3]){
-            plateau[i][2] = 2*plateau[i][2];
-            plateau[i][3] = 0;
+        } else if (plateau[i][2] == plateau[i][1]){
+            plateau[i][1] = 2*plateau[i][1];
+            plateau[i][2] = 0;
+        } else if (plateau[i][1] == plateau[i][0]){
+            plateau[i][1] = 2*plateau[i][1];
+            plateau[i][0] = 0;
         }
     }
     return plateau;
