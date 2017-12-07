@@ -42,10 +42,10 @@ int valeurCase () {
 Plateau plateauInitial() {
     Plateau t = plateauVide();
     vector<int> testRandom(5);
-    int abscisseInitiale1 = rand() % 4;
-    int ordonneeInitiale1 = rand() % 4;
-    int abscisseInitiale2 = rand() % 4;
-    int ordonneeInitiale2 = rand() % 4;
+    int abscisseInitiale1 = rand() % 4; //définit une abscisse initiale pour la première case
+    int ordonneeInitiale1 = rand() % 4;//définit une ordonnée initiale pour la première case
+    int abscisseInitiale2 = rand() % 4;//définit une abscisse initiale pour la deuxième case
+    int ordonneeInitiale2 = rand() % 4;//définit une ordonnée initiale pour la deuxième case
     int nombreDeCasesInitialisees = valeurCase();
     if (nombreDeCasesInitialisees == 4){
         t[abscisseInitiale1][ordonneeInitiale1] = valeurCase();
@@ -70,9 +70,9 @@ string dessine(Plateau g) {
     for (int i = 0; i<t.size(); i++){
         t[i] = vector<string>(4);
         for (int j = 0; j<t[i].size(); j++){
-            t[i][j] = to_string(g[i][j]);
+            t[i][j] = to_string(g[i][j]);   //convertit le tableau d'entiers en tableau de strings
             int k = 0;
-            while (t[i][j].size() < 5){
+            while (t[i][j].size() < 5){     //change tous les strings du tableau de tailles variables en strings de taille 5
                 k = k+1;
                 if ( k%2 == 1 ){
                     t[i][j] = t[i][j] + " ";
@@ -83,7 +83,7 @@ string dessine(Plateau g) {
             }
         }
     }
-    string grille = "*************************\n*" + t[0][0] + "*" + t[0][1] + "*" + t[0][2] + "*" + t[0][3] +"*\n*************************\n*" + t[1][0] + "*" + t[1][1] + "*" + t[1][2] + "*" + t[1][3] +"*\n*************************\n*" + t[2][0] + "*" + t[2][1] + "*" + t[2][2] + "*" + t[2][3] +"*\n*************************\n*" + t[3][0] + "*" + t[3][1] + "*" + t[3][2] + "*" + t[3][3] +"*\n*************************\n";
+    string grille = "*************************\n*" + t[0][0] + "*" + t[0][1] + "*" + t[0][2] + "*" + t[0][3] +"*\n*************************\n*" + t[1][0] + "*" + t[1][1] + "*" + t[1][2] + "*" + t[1][3] +"*\n*************************\n*" + t[2][0] + "*" + t[2][1] + "*" + t[2][2] + "*" + t[2][3] +"*\n*************************\n*" + t[3][0] + "*" + t[3][1] + "*" + t[3][2] + "*" + t[3][3] +"*\n*************************\n";  //crée une string contenant la grille et les valeurs des cases du tableau ainsi que la mise en forme
     return grille;
 }
 
@@ -116,11 +116,21 @@ bool estGagnant(Plateau plateau) {
 
 
 
-bool estTermine (Plateau plateau){
-    if (estGagnant(plateau) == true ){
+bool estTermine (jeu game){
+    jeu game1 = game;
+    jeu game2 = game;
+    jeu game3 = game;
+    jeu game4 = game;
+    if (estGagnant(game.p) == true ){   //vérifie si la grille est gagnante
         return true;
-    } else if ((deplacementGauche(plateau) == plateau) and (deplacementDroite(plateau) == plateau) and (deplacementHaut(plateau) == plateau) and (deplacementBas(plateau) == plateau)){
-        return true;
+    } else {
+        game1 = deplacementBas(game);
+        game2 = deplacementDroite(game);
+        game3 = deplacementGauche(game);
+        game4 = deplacementGauche(game);
+        if ((game1.p == game.p) and (game2.p == game.p) and (game3.p == game.p) and (game4.p == game.p)){   //vérifie si plus aucun déplacement n'est possible
+            return true;
+        }
     }
     return false;
 }
@@ -139,7 +149,8 @@ Plateau suppression0Haut(Plateau plateau){
                 plateau[k][i] = 0;
                 k--;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -157,7 +168,8 @@ Plateau suppression0Bas(Plateau plateau){
                 plateau[k][i] = 0;
                 k++;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -175,7 +187,8 @@ Plateau suppression0Gauche(Plateau plateau){
                 plateau[i][k] = 0;
                 k--;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -193,7 +206,8 @@ Plateau suppression0Droite(Plateau plateau){
                 plateau[i][k] = 0;
                 k++;
             }
-        }    }
+        }
+    }
     return plateau;
 }
 
@@ -202,24 +216,30 @@ Plateau suppression0Droite(Plateau plateau){
  * @return le plateau après les additions
 **/
 
-Plateau additionHaut(Plateau plateau){
+jeu additionHaut(jeu game){
+    Plateau plateau = game.p;
     for (int i = 0; i<plateau.size(); i++){
-        if (plateau[3][i] == plateau[2][i]){
-            plateau[3][i] = 2*plateau[3][i];
-            plateau[2][i] = 0;
-            if (plateau[1][i] == plateau[0][i]){
-                plateau[1][i] = 2*plateau[1][i];
-                plateau[0][i] = 0;
+        if (plateau[0][i] == plateau[1][i]){
+            game.s = game.s+2*plateau[0][i];    //rajoute la valeur de la case additionnée au score
+            plateau[0][i] = 2*plateau[0][i];
+            plateau[1][i] = 0;
+            if (plateau[2][i] == plateau[3][i]){
+                game.s = game.s+2*plateau[2][i];    //rajoute la valeur de la case additionnée au score
+                plateau[2][i] = 2*plateau[2][i];
+                plateau[3][i] = 0;
             }
-        } else if (plateau[2][i] == plateau[1][i]){
+        } else if (plateau[1][i] == plateau[2][i]){
+            game.s = game.s+2*plateau[1][i];    //rajoute la valeur de la case additionnée au score
             plateau[1][i] = 2*plateau[1][i];
             plateau[2][i] = 0;
-        } else if (plateau[1][i] == plateau[0][i]){
-            plateau[1][i] = 2*plateau[1][i];
-            plateau[0][i] = 0;
+        } else if (plateau[2][i] == plateau[3][i]){
+            game.s = game.s+2*plateau[2][i];    //rajoute la valeur de la case additionnée au score
+            plateau[2][i] = 2*plateau[2][i];
+            plateau[3][i] = 0;
         }
     }
-    return plateau;
+    game.p = plateau;
+    return game;
 }
 
 /** Additionne les tuiles vers le bas
@@ -227,24 +247,30 @@ Plateau additionHaut(Plateau plateau){
  * @return le plateau après les additions
 **/
 
-Plateau additionBas(Plateau plateau){
+jeu additionBas(jeu game){
+    Plateau plateau = game.p;
     for (int i = 0; i<plateau.size(); i++){
-        if (plateau[0][i] == plateau[1][i]){
-            plateau[0][i] = 2*plateau[0][i];
-            plateau[1][i] = 0;
-            if (plateau[2][i] == plateau[3][i]){
-                plateau[2][i] = 2*plateau[2][i];
-                plateau[3][i] = 0;
+        if (plateau[3][i] == plateau[2][i]){
+            game.s = game.s+2*plateau[3][i];    //rajoute la valeur de la case additionnée au score
+            plateau[3][i] = 2*plateau[3][i];
+            plateau[2][i] = 0;
+            if (plateau[1][i] == plateau[0][i]){
+                game.s = game.s+2*plateau[1][i];    //rajoute la valeur de la case additionnée au score
+                plateau[1][i] = 2*plateau[1][i];
+                plateau[0][i] = 0;
             }
-        } else if (plateau[1][i] == plateau[2][i]){
+        } else if (plateau[2][i] == plateau[1][i]){
+            game.s = game.s+2*plateau[2][i];    //rajoute la valeur de la case additionnée au score
             plateau[2][i] = 2*plateau[2][i];
             plateau[1][i] = 0;
-        } else if (plateau[2][i] == plateau[3][i]){
-            plateau[2][i] = 2*plateau[2][i];
-            plateau[3][i] = 0;
+        } else if (plateau[1][i] == plateau[0][i]){
+            game.s = game.s+2*plateau[1][i];    //rajoute la valeur de la case additionnée au score
+            plateau[1][i] = 2*plateau[1][i];
+            plateau[0][i] = 0;
         }
-    }
-    return plateau;
+}
+    game.p = plateau;
+    return game;
 }
 
 /** Additionne les tuiles vers la gauche
@@ -252,24 +278,30 @@ Plateau additionBas(Plateau plateau){
  * @return le plateau après les additions
 **/
 
-Plateau additionGauche(Plateau plateau){
+jeu additionGauche(jeu game){
+    Plateau plateau = game.p;
     for (int i = 0; i<plateau.size(); i++){
         if (plateau[i][0] == plateau[i][1]){
+            game.s = game.s+2*plateau[i][0];    //rajoute la valeur de la case additionnée au score
             plateau[i][0] = 2*plateau[i][0];
             plateau[i][1] = 0;
             if (plateau[i][2] == plateau[i][3]){
+                game.s = game.s+2*plateau[i][2];    //rajoute la valeur de la case additionnée au score
                 plateau[i][2] = 2*plateau[i][2];
                 plateau[i][3] = 0;
             }
         } else if (plateau[i][1] == plateau[i][2]){
+            game.s = game.s+2*plateau[i][2];    //rajoute la valeur de la case additionnée au score
             plateau[i][1] = 2*plateau[i][1];
             plateau[i][2] = 0;
         } else if (plateau[i][2] == plateau[i][3]){
+            game.s = game.s+2*plateau[i][2];    //rajoute la valeur de la case additionnée au score
             plateau[i][2] = 2*plateau[i][2];
             plateau[i][3] = 0;
         }
     }
-    return plateau;
+    game.p = plateau;
+    return game;
 }
 
 /** Additionne les tuiles vers la droite
@@ -277,24 +309,30 @@ Plateau additionGauche(Plateau plateau){
  * @return le plateau après les additions
 **/
 
-Plateau additionDroite(Plateau plateau){
+jeu additionDroite(jeu game){
+    Plateau plateau = game.p;
     for (int i = 0; i<plateau.size(); i++){
-        if (plateau[i][0] == plateau[i][1]){
-            plateau[i][0] = 2*plateau[i][0];
-            plateau[i][1] = 0;
-            if (plateau[i][2] == plateau[i][3]){
-                plateau[i][2] = 2*plateau[i][2];
-                plateau[i][3] = 0;
+        if (plateau[i][3] == plateau[i][2]){
+            game.s = game.s+2*plateau[i][3];    //rajoute la valeur de la case additionnée au score
+            plateau[i][3] = 2*plateau[i][3];
+            plateau[i][2] = 0;
+            if (plateau[i][1] == plateau[i][0]){
+                game.s = game.s+2*plateau[i][1];    //rajoute la valeur de la case additionnée au score
+                plateau[i][1] = 2*plateau[i][1];
+                plateau[i][0] = 0;
             }
-        } else if (plateau[i][1] == plateau[i][2]){
+        } else if (plateau[i][2] == plateau[i][1]){
+            game.s = game.s+2*plateau[i][2];    //rajoute la valeur de la case additionnée au score
             plateau[i][2] = 2*plateau[i][2];
             plateau[i][1] = 0;
-        } else if (plateau[i][2] == plateau[i][3]){
-            plateau[i][2] = 2*plateau[i][2];
-            plateau[i][3] = 0;
+        } else if (plateau[i][1] == plateau[i][0]){
+            game.s = game.s+2*plateau[i][1];    //rajoute la valeur de la case additionnée au score
+            plateau[i][1] = 2*plateau[i][1];
+            plateau[i][0] = 0;
         }
-    }
-    return plateau;
+}
+    game.p = plateau;
+    return game;
 }
 
 /** Déplace les tuiles vers le haut et fusionne les tuiles selon les règles
@@ -302,11 +340,11 @@ Plateau additionDroite(Plateau plateau){
  * @return le nouveau plateau après les déplacements
 **/
 
-Plateau deplacementHaut(Plateau plateau){
-    plateau = suppression0Haut(plateau);
-    plateau = additionHaut(plateau);
-    plateau = suppression0Haut(plateau);
-    return plateau;
+jeu deplacementHaut(jeu game){
+    game.p = suppression0Haut(game.p);
+    game = additionHaut(game);
+    game.p = suppression0Haut(game.p);
+    return game;
 }
 
 /** Déplace les tuiles vers le bas et fusionne les tuiles selon les règles
@@ -314,11 +352,11 @@ Plateau deplacementHaut(Plateau plateau){
  * @return le nouveau plateau après les déplacements
 **/
 
-Plateau deplacementBas(Plateau plateau){
-    plateau = suppression0Bas(plateau);
-    plateau = additionBas(plateau);
-    plateau = suppression0Bas(plateau);
-    return plateau;
+jeu deplacementBas(jeu game){
+    game.p = suppression0Bas(game.p);
+    game = additionBas(game);
+    game.p = suppression0Bas(game.p);
+    return game;
 }
 
 /** Déplace les tuiles vers la gauche et fusionne les tuiles selon les règles
@@ -326,11 +364,11 @@ Plateau deplacementBas(Plateau plateau){
  * @return le nouveau plateau après les déplacements
 **/
 
-Plateau deplacementGauche(Plateau plateau){
-    plateau = suppression0Gauche(plateau);
-    plateau = additionGauche(plateau);
-    plateau = suppression0Gauche(plateau);
-    return plateau;
+jeu deplacementGauche(jeu game){
+    game.p = suppression0Gauche(game.p);
+    game = additionGauche(game);
+    game.p = suppression0Gauche(game.p);
+    return game;
 }
 
 /** Déplace les tuiles vers la droite et fusionne les tuiles selon les règles
@@ -338,11 +376,11 @@ Plateau deplacementGauche(Plateau plateau){
  * @return le nouveau plateau après les déplacements
 **/
 
-Plateau deplacementDroite(Plateau plateau){
-    plateau = suppression0Droite(plateau);
-    plateau = additionDroite(plateau);
-    plateau = suppression0Droite(plateau);
-    return plateau;
+jeu deplacementDroite(jeu game){
+    game.p = suppression0Droite(game.p);
+    game = additionDroite(game);
+    game.p = suppression0Droite(game.p);
+    return game;
 }
 
 /** Demande une touche au joueur et exécute le déplacement correspondant
@@ -351,15 +389,15 @@ Plateau deplacementDroite(Plateau plateau){
  * @return le nouveau plateau après les déplacements
 **/
 
-Plateau deplacement(Plateau plateau, int direction){
+jeu deplacement(jeu game, int direction){
     if (direction == GAUCHE){
-        return deplacementGauche(plateau);
+        return deplacementGauche(game);
     } else if ( direction == HAUT){
-        return deplacementHaut(plateau);
+        return deplacementHaut(game);
     } else if (direction == BAS){
-        return deplacementBas(plateau);
+        return deplacementBas(game);
     } else if (direction == DROITE){
-        return deplacementDroite(plateau);
+        return deplacementDroite(game);
     }
 }
 
@@ -369,9 +407,9 @@ Plateau deplacement(Plateau plateau, int direction){
 **/
 
 Plateau creationCase (Plateau t){
-    int abscisse = rand() % 4;
-    int ordonnee = rand() % 4;
-    while (t[abscisse][ordonnee] != 0){
+    int abscisse = rand() % 4;  //définit une abscisse alétaoire pour la case créée
+    int ordonnee = rand() % 4;  //définit une ordonnée alétaoire pour la case créée
+    while (t[abscisse][ordonnee] != 0){     //répète l'opération tant que la case n'est pas vide 
         abscisse = rand() % 4;
         ordonnee = rand() % 4;
     }
@@ -379,7 +417,7 @@ Plateau creationCase (Plateau t){
     return t;
 }
 
-
+/**
 void test(){
     srand(time(NULL));
     int compteur = 0;
@@ -399,7 +437,7 @@ void test(){
         }
     cout << compteur << endl;
 }
-
+**/
 
 
 
