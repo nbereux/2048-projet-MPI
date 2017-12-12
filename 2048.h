@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <thread>
 #include <chrono>
+#include <ncurses.h>
 using namespace std;
 
 const int GAUCHE = 4, DROITE = 6, HAUT = 8, BAS = 2;

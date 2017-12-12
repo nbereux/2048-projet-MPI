@@ -70,7 +70,11 @@ string dessine(Plateau g) {
     for (int i = 0; i<t.size(); i++){
         t[i] = vector<string>(4);
         for (int j = 0; j<t[i].size(); j++){
-            t[i][j] = to_string(g[i][j]);
+            if (g[i][j] == 0){
+                t[i][j] = " ";
+            } else {
+                t[i][j] = to_string(g[i][j]);
+            }
             int k = 0;
             while (t[i][j].size() < 5){
                 k = k+1;
