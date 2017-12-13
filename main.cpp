@@ -8,13 +8,15 @@ int main(){
     cbreak();
     keypad(stdscr,TRUE);
     timeout(0);
-    srand(time(NULL));
+    jeu jeuActuel; 
+    srand(time(NULL));  //donne une seed égale au nombre de secondes depuis le 1er janvier 1970 minuit à la fonction rand
     int direction;
-    Plateau stockageTableau;
-    Plateau plateauDeJeu = plateauInitial();
-    printw(dessine(plateauDeJeu).c_str());
-    while (estGagnant(plateauDeJeu) != true and estTermine(plateauDeJeu)!= true){
-        stockageTableau = plateauDeJeu;
+    Plateau stockageTableau; 
+    jeuActuel.p = plateauInitial();
+    jeuActuel.s=0;
+    printw(dessine(jeuActuel.p).c_str());
+    while (estGagnant(jeuActuel.p) != true and estTermine(jeuActuel)!= true){
+        stockageTableau = jeuActuel.p;
         direction = 0;
         while (direction != 2 and direction != 4 and direction != 6 and direction != 8){
             int touche = getch();
@@ -35,16 +37,15 @@ int main(){
                 }
             }
         }
-        plateauDeJeu = deplacement(plateauDeJeu, direction);
-        if (plateauDeJeu != stockageTableau){
-            plateauDeJeu = creationCase(plateauDeJeu);
+        jeuActuel = deplacement(jeuActuel, direction);
+        if (jeuActuel.p != stockageTableau){    //vérifie que le tableau après le déplacement est différent du tableau avant déplacement
+            jeuActuel.p = creationCase(jeuActuel.p);
         }
         clear();
-        printw(dessine(plateauDeJeu).c_str());
-        printw("score = ", plateauDeJeu);
+        printw(dessine(jeuActuel.p).c_str());
+        printw("score = %d", jeuActuel.s);
         refresh();
     }
     return 0;
-
 }
 
