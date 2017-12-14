@@ -1,4 +1,4 @@
-#include "2048.h"
+		#include "2048.h"
 using namespace std;
 
 
@@ -6,12 +6,27 @@ int main(){
     initscr();
     noecho();
     cbreak();
+    start_color();
     keypad(stdscr,TRUE);
     timeout(0);
-    jeu jeuActuel; 
+    
+
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(4, COLOR_GREEN, COLOR_BLACK);
+	init_pair(8, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(16, COLOR_BLUE, COLOR_BLACK);
+	init_pair(32, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(64, COLOR_CYAN, COLOR_BLACK);
+	init_pair(128, COLOR_WHITE, COLOR_BLACK);
+	init_pair(256, COLOR_CYAN, COLOR_BLACK);
+	init_pair(512, COLOR_BLACK, COLOR_BLACK);
+	init_pair(1024, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2048, COLOR_BLACK, COLOR_BLACK);
+    
+    jeu jeuActuel;
     srand(time(NULL));  //donne une seed égale au nombre de secondes depuis le 1er janvier 1970 minuit à la fonction rand
     int direction;
-    Plateau stockageTableau; 
+    Plateau stockageTableau;
     jeuActuel.p = plateauInitial();
     jeuActuel.s=0;
     printw(dessine(jeuActuel.p).c_str());
@@ -42,10 +57,11 @@ int main(){
             jeuActuel.p = creationCase(jeuActuel.p);
         }
         clear();
-        printw(dessine(jeuActuel.p).c_str());
+		dessineNcurses(jeuActuel.p);
         printw("score = %d", jeuActuel.s);
         refresh();
     }
+    ecranFinal(jeuActuel);
     return 0;
 }
 

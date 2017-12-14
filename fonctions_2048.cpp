@@ -1,15 +1,15 @@
 #include "2048.h"
 
+
+
 /** Construit un tableau 2D 4x4 d'entiers dont les valeurs sont initialisées à 0
  * @return le tableau 2D 4x4 d'entiers
 **/
 
-
-
 Plateau plateauVide() {
-    Plateau t = Plateau(4);
+    Plateau t = Plateau(4);             //Allocation
     for (int i = 0; i<t.size(); i++){
-        t[i] = vector<int>(4,0);
+        t[i] = vector<int>(4,0);        //Allocation et initialisation
     }
     return t;
 }
@@ -20,14 +20,12 @@ Plateau plateauVide() {
  * @return l'entier n contenant au hasard 2 ou 4
 **/
 
-
-
 int valeurCase () {
-    int i = rand() % 10;
+    int i = rand() % 10;                //prends un entier aléatoire entre 1 et 10
     if (i == 0){
-        return 4;
+        return 4;                       //renvoie 4 une fois sur dix
     }else{
-        return 2;
+        return 2;                       //renvoie 2 neuf fois sur dix
     }
 }
 
@@ -37,22 +35,14 @@ int valeurCase () {
  * @return le tableau 2D 4x4 d'entiers
 **/
 
-
-
 Plateau plateauInitial() {
     Plateau t = plateauVide();
-    vector<int> testRandom(5);
-    int abscisseInitiale1 = rand() % 4; //définit une abscisse initiale pour la première case
-    int ordonneeInitiale1 = rand() % 4;//définit une ordonnée initiale pour la première case
-    int abscisseInitiale2 = rand() % 4;//définit une abscisse initiale pour la deuxième case
-    int ordonneeInitiale2 = rand() % 4;//définit une ordonnée initiale pour la deuxième case
+    int abscisseInitiale1 = rand() % 4; //définit une abscisse initiale pour la première case entre 0 et 3
+    int ordonneeInitiale1 = rand() % 4; //définit une ordonnée initiale pour la première case entre 0 et 3
+    int abscisseInitiale2 = rand() % 4;
+    int ordonneeInitiale2 = rand() % 4;
     int nombreDeCasesInitialisees = valeurCase();
-    if (nombreDeCasesInitialisees == 4){
-        t[abscisseInitiale1][ordonneeInitiale1] = valeurCase();
-    } else {
-        t[abscisseInitiale1][ordonneeInitiale1] = valeurCase();
-        t[abscisseInitiale2][ordonneeInitiale2] = valeurCase();
-    }
+    t[abscisseInitiale1][ordonneeInitiale1] = valeurCase(); //Assigne une valeur entre 2 et 4 à la case d'abscisse abscisseInitiale1 et d'ordonnee ordonneeInitiale1
     return t;
 }
 
@@ -63,16 +53,18 @@ Plateau plateauInitial() {
  * @return une chaine de caractères représentant la grille et les nombres dans les cases
 **/
 
-
-
 string dessine(Plateau g) {
-    vector<vector<string>> t = vector<vector<string>>(4);
+    vector<vector<string>> t(4);            //crée un tableau 2D de string
     for (int i = 0; i<t.size(); i++){
-        t[i] = vector<string>(4);
+        t[i] = vector<string>(4);           //Allocation
         for (int j = 0; j<t[i].size(); j++){
-            t[i][j] = to_string(g[i][j]);   //convertit le tableau d'entiers en tableau de strings
+            if (g[i][j] == 0){
+                t[i][j] = " ";
+            } else {
+                t[i][j] = to_string(g[i][j]);   //convertit le tableau d'entiers en tableau de strings
+            }   //convertit le tableau d'entiers en tableau de strings
             int k = 0;
-            while (t[i][j].size() < 5){     //change tous les strings du tableau de tailles variables en strings de taille 5
+            while (t[i][j].size() < 5){     //Donne une taille de 5 à chaque case de t en rajoutant des espaces a droite et a gauche
                 k = k+1;
                 if ( k%2 == 1 ){
                     t[i][j] = t[i][j] + " ";
@@ -83,7 +75,7 @@ string dessine(Plateau g) {
             }
         }
     }
-    string grille = "*************************\n*" + t[0][0] + "*" + t[0][1] + "*" + t[0][2] + "*" + t[0][3] +"*\n*************************\n*" + t[1][0] + "*" + t[1][1] + "*" + t[1][2] + "*" + t[1][3] +"*\n*************************\n*" + t[2][0] + "*" + t[2][1] + "*" + t[2][2] + "*" + t[2][3] +"*\n*************************\n*" + t[3][0] + "*" + t[3][1] + "*" + t[3][2] + "*" + t[3][3] +"*\n*************************\n";  //crée une string contenant la grille et les valeurs des cases du tableau ainsi que la mise en forme
+    string grille = "*************************\n*" + t[0][0] + "*" + t[0][1] + "*" + t[0][2] + "*" + t[0][3] +"*\n*************************\n*" + t[1][0] + "*" + t[1][1] + "*" + t[1][2] + "*" + t[1][3] +"*\n*************************\n*" + t[2][0] + "*" + t[2][1] + "*" + t[2][2] + "*" + t[2][3] +"*\n*************************\n*" + t[3][0] + "*" + t[3][1] + "*" + t[3][2] + "*" + t[3][3] +"*\n*************************\n";  //Cree une chaine de caractere formant la grille ainsi que les cases avec la bonne mise en forme
     return grille;
 }
 
@@ -93,8 +85,6 @@ string dessine(Plateau g) {
  * @param un plateau plateau
  * @return un booleen vrai si la grille contient une case 2048 et faux sinon
 **/
-
-
 
 bool estGagnant(Plateau plateau) {
     for (int i = 0; i<plateau.size(); i++){
@@ -114,8 +104,6 @@ bool estGagnant(Plateau plateau) {
  * @return un booleen vrai si la grille est pleine et faux sinon
 **/
 
-
-
 bool estTermine (jeu game){
     jeu game1 = game;
     jeu game2 = game;
@@ -130,10 +118,12 @@ bool estTermine (jeu game){
         game4 = deplacementGauche(game);
         if ((game1.p == game.p) and (game2.p == game.p) and (game3.p == game.p) and (game4.p == game.p)){   //vérifie si plus aucun déplacement n'est possible
             return true;
-        }
     }
     return false;
 }
+}
+
+
 
 /** Déplace les tuiles vers le haut sans les additionner
  * @param un plateau plateau
@@ -154,6 +144,8 @@ Plateau suppression0Haut(Plateau plateau){
     return plateau;
 }
 
+
+
 /** Déplace les tuiles vers le bas sans les additionner
  * @param un plateau plateau
  * @return un plateau après avoir deplacé les tuiles
@@ -172,6 +164,8 @@ Plateau suppression0Bas(Plateau plateau){
     }
     return plateau;
 }
+
+
 
 /** Déplace les tuiles vers la gauche sans les additionner
  * @param un plateau plateau
@@ -192,6 +186,8 @@ Plateau suppression0Gauche(Plateau plateau){
     return plateau;
 }
 
+
+
 /** Déplace les tuiles vers la droite sans les additionner
  * @param un plateau plateau
  * @return un plateau après avoir deplacé les tuiles
@@ -210,6 +206,8 @@ Plateau suppression0Droite(Plateau plateau){
     }
     return plateau;
 }
+
+
 
 /** Additionne les tuiles vers le haut
  * @param un plateau plateau
@@ -242,6 +240,8 @@ jeu additionHaut(jeu game){
     return game;
 }
 
+
+
 /** Additionne les tuiles vers le bas
  * @param un plateau plateau
  * @return le plateau après les additions
@@ -272,6 +272,8 @@ jeu additionBas(jeu game){
     game.p = plateau;
     return game;
 }
+
+
 
 /** Additionne les tuiles vers la gauche
  * @param un plateau plateau
@@ -304,6 +306,8 @@ jeu additionGauche(jeu game){
     return game;
 }
 
+
+
 /** Additionne les tuiles vers la droite
  * @param un plateau plateau
  * @return le plateau après les additions
@@ -335,6 +339,8 @@ jeu additionDroite(jeu game){
     return game;
 }
 
+
+
 /** Déplace les tuiles vers le haut et fusionne les tuiles selon les règles
  * @param un plateau plateau
  * @return le nouveau plateau après les déplacements
@@ -346,6 +352,8 @@ jeu deplacementHaut(jeu game){
     game.p = suppression0Haut(game.p);
     return game;
 }
+
+
 
 /** Déplace les tuiles vers le bas et fusionne les tuiles selon les règles
  * @param un plateau plateau
@@ -359,6 +367,8 @@ jeu deplacementBas(jeu game){
     return game;
 }
 
+
+
 /** Déplace les tuiles vers la gauche et fusionne les tuiles selon les règles
  * @param un plateau plateau
  * @return le nouveau plateau après les déplacements
@@ -371,6 +381,8 @@ jeu deplacementGauche(jeu game){
     return game;
 }
 
+
+
 /** Déplace les tuiles vers la droite et fusionne les tuiles selon les règles
  * @param un plateau plateau
  * @return le nouveau plateau après les déplacements
@@ -382,6 +394,8 @@ jeu deplacementDroite(jeu game){
     game.p = suppression0Droite(game.p);
     return game;
 }
+
+
 
 /** Demande une touche au joueur et exécute le déplacement correspondant
  * @param une grille plateau
@@ -401,43 +415,20 @@ jeu deplacement(jeu game, int direction){
     }
 }
 
+
+
 /** Ajoute une nouvelle case initialisée à 2 ou 4 selon les probabilités du 2048
  * @param un plateau t
  * @return le plateau t avec une nouvelle case
 **/
 
 Plateau creationCase (Plateau t){
-    int abscisse = rand() % 4;  //définit une abscisse alétaoire pour la case créée
-    int ordonnee = rand() % 4;  //définit une ordonnée alétaoire pour la case créée
-    while (t[abscisse][ordonnee] != 0){     //répète l'opération tant que la case n'est pas vide 
+    int abscisse = rand() % 4;  //donne une valeur a abscisse entre 0 et 3
+    int ordonnee = rand() % 4;
+    while (t[abscisse][ordonnee] != 0){     //réitère l'opération tant que la case donnée n'est pas vide
         abscisse = rand() % 4;
         ordonnee = rand() % 4;
     }
     t[abscisse][ordonnee] = valeurCase();
     return t;
 }
-
-/**
-void test(){
-    srand(time(NULL));
-    int compteur = 0;
-    for (int test = 0; test < 120; test++){
-        Plateau t = plateauInitial();
-        cout << dessine(t);
-        int somme = 0;
-        for (int test2 = 0; test2 < t.size(); test2++){
-            for (int test3 = 0; test3 < t[test2].size(); test3++){
-                somme = somme +t[test2][test3];
-            }
-        }
-        if ( not(somme == 2) and not(somme == 4) and not(somme==6) and not (somme == 8)){
-            compteur++;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-    cout << compteur << endl;
-}
-**/
-
-
-

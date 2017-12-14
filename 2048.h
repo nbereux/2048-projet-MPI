@@ -7,10 +7,13 @@
 #include <thread>
 #include <chrono>
 #include <ncurses.h>
+#include <fstream>
 using namespace std;
 
 const int GAUCHE = 4, DROITE = 6, HAUT = 8, BAS = 2;
 typedef vector<vector<int>> Plateau;
+
+
 
 struct jeu {    //définit une structure jeu contenant un plateau ainsi qu'un score
     Plateau p;
@@ -43,3 +46,7 @@ int score(Plateau plateau);
 
 int valeurCase();
 Plateau creationCase(Plateau t);
+
+void ecranFinal(jeu game);
+void dessineNcurses(Plateau plateau);
+void colorie(int valeur, const char * tile);
